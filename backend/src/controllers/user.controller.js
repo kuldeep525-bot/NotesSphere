@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendEmail } from "../../utils/sendEmail.js";
-const SecretKey = "studentMangement@_525";
 
 export const register = async (req, res) => {
   try {
@@ -85,7 +84,7 @@ export const login = async (req, res) => {
         status: userexits.status,
         isDeleted: userexits.isDeleted,
       },
-      SecretKey,
+      process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
 
@@ -93,7 +92,7 @@ export const login = async (req, res) => {
     const cookiesOption = {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       httpOnly: true, //frontend js cannot access
-      secure: false,
+      secure: true,
       sameSite: "lax", //CSRF prvenetion
     };
 

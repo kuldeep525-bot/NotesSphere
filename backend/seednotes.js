@@ -34,6 +34,7 @@ async function seedNotes() {
     console.log("✅ 100 dummy notes created successfully!");
     process.exit();
   } catch (err) {
+    console.log("hello");
     console.error(err);
     process.exit(1);
   }

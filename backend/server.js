@@ -47,10 +47,6 @@ app.use("/api/paper", paperRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/v2/admin", adminRoutes);
 
-app.get("/", (req, res) => {
-  res.send("api running");
-});
-
 app.listen(port, () => {
   console.log("Server running on port", port);
 });

@@ -8,7 +8,7 @@ import Logout from "../auth/Logout";
 import AllNotes from "../pages/Allnotes";
 import EditNotes from "../pages/EditNotes";
 import AdminDashboard from "../../admin/AdminDashboard";
-import { AdminLogin } from "../../admin/auth/adminLogin";
+import { AdminLogin } from "../../admin/auth/AdminLogin";
 import UsersList from "../../admin/UsersList";
 import CreatePaper from "../../admin/CreatePaper";
 import ProtectedRoute from "./ProtectedRoute";

@@ -93,7 +93,7 @@ export const login = async (req, res) => {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       httpOnly: true, //frontend js cannot access
       secure: true,
-      sameSite: "lax", //CSRF prvenetion
+      sameSite: "none", //CSRF prvenetion
     };
 
     //store token in cookie

@@ -20,7 +20,6 @@ await connectdb();
 app.use(
   cors({
     origin: "https://notesspherestu.onrender.com",
-    origin: true,
     credentials: true,
   }),
 );

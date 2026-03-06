@@ -19,14 +19,17 @@ await connectdb();
 /* SIMPLE CORS */
 app.use(
   cors({
-    // origin: "http://localhost:5173",
+    origin: "https://notesspherestu.onrender.com",
     origin: true,
     credentials: true,
   }),
 );
 
 app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://notesspherestu.onrender.com",
+  );
   res.header(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, PATCH, DELETE, OPTIONS",

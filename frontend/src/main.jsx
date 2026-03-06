@@ -13,7 +13,7 @@ import ToastProvider from "./context/ToastProvider.jsx";
 import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+
     <BrowserRouter>
       <ThemeProvider>
         <NotesProvider>
@@ -23,6 +23,5 @@ createRoot(document.getElementById("root")).render(
           </PaperProvider>
         </NotesProvider>
       </ThemeProvider>
-    </BrowserRouter>
-  </StrictMode>,
+    </BrowserRouter>,
 );

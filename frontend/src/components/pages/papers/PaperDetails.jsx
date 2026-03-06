@@ -643,12 +643,12 @@ const PaperDetails = () => {
 
   const handleDownloadQuestion = () =>
     window.open(
-      `http://localhost:4000/api/paper/dwnlQues/${paperId}`,
+      `https://studentnotes.onrender.com/api/paper/dwnlQues/${paperId}`,
       "_blank",
     );
 
   const handleDownloadAnswer = () =>
-    window.open(`http://localhost:4000/api/paper/dwnlAns/${paperId}`, "_blank");
+    window.open(`https://studentnotes.onrender.com/api/paper/dwnlQues/${paperId}`, "_blank");
 
   const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 

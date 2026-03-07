@@ -12,6 +12,8 @@ export const sendEmail = async ({ to, subject, text }) => {
     },
   });
 
+  await transporter.verify();
+  console.log("SMTP connected");
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to,

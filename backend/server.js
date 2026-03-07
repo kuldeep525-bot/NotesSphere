@@ -10,8 +10,8 @@ import adminRoutes from "./src/routes/admin.routes.js";
 import paperRoutes from "./src/routes/paper.routes.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
-import fs from "fs"; // 👈 ADD
-import path from "path"; // 👈 ADD
+import fs from "fs";
+import path from "path";
 
 const app = express();
 const port = process.env.PORT || 6000;

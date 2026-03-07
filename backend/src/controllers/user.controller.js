@@ -229,10 +229,10 @@ export const forgotPassword = async (req, res) => {
     user.resetToken = hashToken;
     user.expiryToken = Date.now() + 10 * 60 * 1000; //valid upto 10 minutes
 
-    user.save({ validateBeforeSave: false }); //validation skip kar ka save
+    await user.save({ validateBeforeSave: false }); //validation skip kar ka save
 
     //now reset url banana
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetUrl = `https://notesspherestu.onrender.com/reset-password/${resetToken}`;
 
     const message = `You requested a password reset to studentMgt.
 Click the link below:

@@ -648,7 +648,7 @@ const PaperDetails = () => {
     );
 
   const handleDownloadAnswer = () =>
-    window.open(`https://studentnotes.onrender.com/api/paper/dwnlQues/${paperId}`, "_blank");
+    window.open(`https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`, "_blank");
 
   const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 

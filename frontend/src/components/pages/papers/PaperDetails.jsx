@@ -1,410 +1,33 @@
-// // // import React, { useEffect, useState } from "react";
-// // // import { useParams } from "react-router-dom";
-// // // import api from "../../../services/api";
-// // // import QRCode from "qrcode";
-
-// // // const PaperDetails = () => {
-// // //   const { paperId } = useParams();
-
-// // //   const [paper, setPaper] = useState(null);
-// // //   const [loading, setLoading] = useState(true);
-// // //   const [upiData, setUpiData] = useState(null);
-// // //   const [transactionId, setTransactionId] = useState("");
-// // //   const [message, setMessage] = useState("");
-// // //   const [qrCode, setQrCode] = useState("");
-
-// // //   // ===============================
-// // //   // Fetch Paper
-// // //   // ===============================
-// // //   useEffect(() => {
-// // //     const fetchPaper = async () => {
-// // //       try {
-// // //         const res = await api.get(`/api/paper/getPaper/${paperId}`);
-// // //         setPaper(res.data);
-// // //       } catch (error) {
-// // //         console.log("Error fetching paper", error);
-// // //       } finally {
-// // //         setLoading(false);
-// // //       }
-// // //     };
-
-// // //     fetchPaper();
-// // //   }, [paperId]);
-
-// // //   // ===============================
-// // //   // Download Question
-// // //   // ===============================
-// // //   const handleDownloadQuestion = () => {
-// // //     window.open(
-// // //       `http://localhost:4000/api/paper/dwnlQues/${paperId}`,
-// // //       "_blank"
-// // //     );
-// // //   };
-
-// // //   // ===============================
-// // //   // Download Answer
-// // //   // ===============================
-// // //   const handleDownloadAnswer = () => {
-// // //     window.open(
-// // //       `http://localhost:4000/api/paper/dwnlAns/${paperId}`,
-// // //       "_blank"
-// // //     );
-// // //   };
-
-// // //   // ===============================
-// // //   // Detect Mobile Device
-// // //   // ===============================
-// // //   const isMobile = () => {
-// // //     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-// // //   };
-
-// // //   // ===============================
-// // //   // Generate UPI
-// // //   // ===============================
-// // //   const handleBuy = async () => {
-// // //     try {
-// // //       const res = await api.get(`/api/paper/generateUpi/${paperId}`);
-
-// // //       setUpiData(res.data);
-
-// // //       if (isMobile()) {
-// // //         // Mobile → Direct UPI Open
-// // //         window.location.href = res.data.upiLink;
-// // //       } else {
-// // //         // Desktop → Generate QR
-// // //         const qr = await QRCode.toDataURL(res.data.upiLink);
-// // //         setQrCode(qr);
-// // //       }
-
-// // //     } catch (err) {
-// // //       setMessage(
-// // //         err.response?.data?.message || "Failed to generate UPI link"
-// // //       );
-// // //     }
-// // //   };
-
-// // //   // ===============================
-// // //   // Submit Transaction
-// // //   // ===============================
-// // //   const handleSubmitTransaction = async () => {
-// // //     try {
-// // //       const res = await api.post(
-// // //         `/api/paper/submitUpi/${paperId}`,
-// // //         { transactionId }
-// // //       );
-
-// // //       setMessage(res.data.message);
-// // //       setTransactionId("");
-// // //     } catch (err) {
-// // //       setMessage(
-// // //         err.response?.data?.message || "Error submitting transaction"
-// // //       );
-// // //     }
-// // //   };
-
-// // //   if (loading) {
-// // //     return <div className="text-center mt-10">Loading...</div>;
-// // //   }
-
-// // //   if (!paper) {
-// // //     return <div className="text-center mt-10">Paper not found</div>;
-// // //   }
-
-// // //   return (
-// // //     <div className="min-h-screen bg-base-200 p-8">
-// // //       <div className="max-w-2xl mx-auto bg-base-100 shadow-xl p-8 rounded-xl">
-
-// // //         <h1 className="text-3xl font-bold mb-6 text-center">
-// // //           {paper.title}
-// // //         </h1>
-
-// // //         <div className="space-y-2 text-lg">
-// // //           <p><strong>Subject:</strong> {paper.subject}</p>
-// // //           <p><strong>Year:</strong> {paper.year}</p>
-// // //           <p><strong>Price:</strong> ₹{paper.price}</p>
-// // //         </div>
-
-// // //         <div className="mt-8 space-y-4">
-
-// // //           <button
-// // //             type="button"
-// // //             onClick={handleDownloadQuestion}
-// // //             className="btn btn-primary w-full"
-// // //           >
-// // //             Download Question Paper
-// // //           </button>
-
-// // //           <button
-// // //             type="button"
-// // //             onClick={handleBuy}
-// // //             className="btn btn-accent w-full"
-// // //           >
-// // //             Buy Answer PDF
-// // //           </button>
-
-// // //           <button
-// // //             type="button"
-// // //             onClick={handleDownloadAnswer}
-// // //             className="btn btn-secondary w-full"
-// // //           >
-// // //             Download Answer PDF
-// // //           </button>
-
-// // //         </div>
-
-// // //         {/* QR Code Section (Desktop Only) */}
-// // //         {qrCode && (
-// // //           <div className="mt-8 text-center">
-// // //             <h3 className="font-semibold mb-3">
-// // //               Scan QR Code to Pay
-// // //             </h3>
-// // //             <img src={qrCode} alt="UPI QR Code" className="mx-auto w-64" />
-// // //           </div>
-// // //         )}
-
-// // //         {/* Transaction Section */}
-// // //         {upiData && (
-// // //           <div className="mt-8 bg-base-200 p-4 rounded-lg">
-// // //             <h3 className="font-semibold mb-2">
-// // //               Enter Transaction ID After Payment
-// // //             </h3>
-
-// // //             <p className="mb-3">
-// // //               Amount: ₹{upiData.amount}
-// // //             </p>
-
-// // //             <input
-// // //               type="text"
-// // //               placeholder="Enter Transaction ID"
-// // //               value={transactionId}
-// // //               onChange={(e) => setTransactionId(e.target.value)}
-// // //               className="input input-bordered w-full mb-3"
-// // //             />
-
-// // //             <button
-// // //               type="button"
-// // //               onClick={handleSubmitTransaction}
-// // //               className="btn btn-success w-full"
-// // //             >
-// // //               Submit Transaction
-// // //             </button>
-// // //           </div>
-// // //         )}
-
-// // //         {message && (
-// // //           <div className="mt-6 alert alert-info">
-// // //             {message}
-// // //           </div>
-// // //         )}
-
-// // //       </div>
-// // //     </div>
-// // //   );
-// // // };
-
-// // // export default PaperDetails;
-
-// // import React, { useEffect, useState } from "react";
-// // import { useParams } from "react-router-dom";
-// // import api from "../../../services/api";
-// // import QRCode from "qrcode";
-// // import { toast } from "react-toastify";
-
-// // const PaperDetails = () => {
-// //   const { paperId } = useParams();
-
-// //   const [paper, setPaper] = useState(null);
-// //   const [loading, setLoading] = useState(true);
-// //   const [upiData, setUpiData] = useState(null);
-// //   const [transactionId, setTransactionId] = useState("");
-// //   const [message, setMessage] = useState("");
-// //   const [qrCode, setQrCode] = useState("");
-
-// //   // ===============================
-// //   // Fetch Paper
-// //   // ===============================
-// //   useEffect(() => {
-// //     const fetchPaper = async () => {
-// //       try {
-// //         const res = await api.get(`/api/paper/getPaper/${paperId}`);
-// //         setPaper(res.data);
-// //       } catch (error) {
-// //         console.log("Error fetching paper", error);
-// //       } finally {
-// //         setLoading(false);
-// //       }
-// //     };
-
-// //     fetchPaper();
-// //   }, [paperId]);
-
-// //   // ===============================
-// //   // Download Question
-// //   // ===============================
-// //   const handleDownloadQuestion = () => {
-// //     window.open(
-// //       `http://localhost:4000/api/paper/dwnlQues/${paperId}`,
-// //       "_blank",
-// //     );
-// //   };
-
-// //   // ===============================
-// //   // Download Answer
-// //   // ===============================
-// //   const handleDownloadAnswer = () => {
-// //     window.open(`http://localhost:4000/api/paper/dwnlAns/${paperId}`, "_blank");
-// //   };
-
-// //   // ===============================
-// //   // Detect Mobile Device
-// //   // ===============================
-// //   const isMobile = () => {
-// //     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-// //   };
-
-// //   // ===============================
-// //   // Generate UPI
-// //   // ===============================
-// //   const handleBuy = async () => {
-// //     try {
-// //       const res = await api.get(`/api/paper/generateUpi/${paperId}`);
-
-// //       setUpiData(res.data);
-
-// //       if (isMobile()) {
-// //         window.location.href = res.data.upiLink;
-// //       } else {
-// //         const qr = await QRCode.toDataURL(res.data.upiLink);
-// //         setQrCode(qr);
-// //       }
-// //     } catch (err) {
-// //       setMessage(err.response?.data?.message || "Failed to generate UPI link");
-// //     }
-// //   };
-
-// //   // ===============================
-// //   // Submit Transaction
-// //   // ===============================
-// //   const handleSubmitTransaction = async () => {
-// //     try {
-// //       const res = await api.post(`/api/paper/submitUpi/${paperId}`, {
-// //         transactionId,
-// //       });
-
-// //       toast.error(res.data.message);
-// //       setTransactionId("");
-// //     } catch (err) {
-// //       setMessage(err.response?.data?.message || "Error submitting transaction");
-// //     }
-// //   };
-
-// //   if (loading) {
-// //     return <div className="text-center mt-10">Loading...</div>;
-// //   }
-
-// //   if (!paper) {
-// //     return <div className="text-center mt-10">Paper not found</div>;
-// //   }
-
-// //   return (
-// //     <div className="min-h-screen bg-base-200 p-8">
-// //       <div className="max-w-2xl mx-auto bg-base-100 shadow-xl p-8 rounded-xl">
-// //         <h1 className="text-3xl font-bold mb-6 text-center">{paper.title}</h1>
-
-// //         <div className="space-y-2 text-lg">
-// //           <p>
-// //             <strong>Subject:</strong> {paper.subject}
-// //           </p>
-// //           <p>
-// //             <strong>Year:</strong> {paper.year}
-// //           </p>
-// //           <p>
-// //             <strong>Price:</strong> {paper.isPaid ? `₹${paper.price}` : "Free"}
-// //           </p>
-// //         </div>
-
-// //         <div className="mt-8 space-y-4">
-// //           {/* Always Visible */}
-// //           <button
-// //             type="button"
-// //             onClick={handleDownloadQuestion}
-// //             className="btn btn-primary w-full"
-// //           >
-// //             Download Question Paper
-// //           </button>
-
-// //           {/* Show Buy Button Only If Paid */}
-// //           {paper.isPaid && (
-// //             <button
-// //               type="button"
-// //               onClick={handleBuy}
-// //               className="btn btn-accent w-full"
-// //             >
-// //               Buy Answer PDF
-// //             </button>
-// //           )}
-
-// //           {/* Always Visible - Backend handles permission */}
-// //           <button
-// //             type="button"
-// //             onClick={handleDownloadAnswer}
-// //             className="btn btn-secondary w-full"
-// //           >
-// //             Download Answer PDF
-// //           </button>
-// //         </div>
-
-// //         {/* QR Code Section (Only For Paid Papers) */}
-// //         {paper.isPaid && qrCode && (
-// //           <div className="mt-8 text-center">
-// //             <h3 className="font-semibold mb-3">Scan QR Code to Pay</h3>
-// //             <img src={qrCode} alt="UPI QR Code" className="mx-auto w-64" />
-// //           </div>
-// //         )}
-
-// //         {/* Transaction Section */}
-// //         {paper.isPaid && upiData && (
-// //           <div className="mt-8 bg-base-200 p-4 rounded-lg">
-// //             <h3 className="font-semibold mb-2">
-// //               Enter Transaction ID After Payment
-// //             </h3>
-
-// //             <p className="mb-3">Amount: ₹{upiData.amount}</p>
-
-// //             <input
-// //               type="text"
-// //               placeholder="Enter Transaction ID"
-// //               value={transactionId}
-// //               onChange={(e) => setTransactionId(e.target.value)}
-// //               className="input input-bordered w-full mb-3"
-// //             />
-
-// //             <button
-// //               type="button"
-// //               onClick={handleSubmitTransaction}
-// //               className="btn btn-success w-full"
-// //             >
-// //               Submit Transaction
-// //             </button>
-// //           </div>
-// //         )}
-
-// //         {message && <div className="mt-6 alert alert-info">{message}</div>}
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default PaperDetails;
 
 // import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
+// import { useParams, useNavigate } from "react-router-dom";
 // import api from "../../../services/api";
 // import QRCode from "qrcode";
 // import { toast } from "react-toastify";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// /* ── Floating blob ── */
+// const Blob = ({
+//   className,
+//   duration = 9,
+//   xRange = 60,
+//   yRange = 40,
+//   delay = 0,
+// }) => (
+//   <motion.div
+//     className={`absolute rounded-full blur-3xl pointer-events-none ${className}`}
+//     animate={{
+//       x: [0, xRange, xRange / 2, -xRange / 2, 0],
+//       y: [0, -yRange, yRange, -yRange / 2, 0],
+//       scale: [1, 1.1, 0.95, 1.05, 1],
+//     }}
+//     transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
+//   />
+// );
 
 // const PaperDetails = () => {
 //   const { paperId } = useParams();
+//   const navigate = useNavigate();
 
 //   const [paper, setPaper] = useState(null);
 //   const [loading, setLoading] = useState(true);
@@ -413,9 +36,6 @@
 //   const [message, setMessage] = useState("");
 //   const [qrCode, setQrCode] = useState("");
 
-//   // ===============================
-//   // Fetch Paper
-//   // ===============================
 //   useEffect(() => {
 //     const fetchPaper = async () => {
 //       try {
@@ -427,43 +47,24 @@
 //         setLoading(false);
 //       }
 //     };
-
 //     fetchPaper();
 //   }, [paperId]);
 
-//   // ===============================
-//   // Download Question
-//   // ===============================
-//   const handleDownloadQuestion = () => {
+//   const handleDownloadQuestion = () =>
 //     window.open(
-//       `http://localhost:4000/api/paper/dwnlQues/${paperId}`,
+//       `https://studentnotes.onrender.com/api/paper/dwnlQues/${paperId}`,
 //       "_blank",
 //     );
-//   };
 
-//   // ===============================
-//   // Download Answer
-//   // ===============================
-//   const handleDownloadAnswer = () => {
-//     window.open(`http://localhost:4000/api/paper/dwnlAns/${paperId}`, "_blank");
-//   };
+//   const handleDownloadAnswer = () =>
+//     window.open(`https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`, "_blank");
 
-//   // ===============================
-//   // Detect Mobile Device
-//   // ===============================
-//   const isMobile = () => {
-//     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-//   };
+//   const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-//   // ===============================
-//   // Generate UPI
-//   // ===============================
 //   const handleBuy = async () => {
 //     try {
 //       const res = await api.get(`/api/paper/generateUpi/${paperId}`);
-
 //       setUpiData(res.data);
-
 //       if (isMobile()) {
 //         window.location.href = res.data.upiLink;
 //       } else {
@@ -475,15 +76,11 @@
 //     }
 //   };
 
-//   // ===============================
-//   // Submit Transaction
-//   // ===============================
 //   const handleSubmitTransaction = async () => {
 //     try {
 //       const res = await api.post(`/api/paper/submitUpi/${paperId}`, {
 //         transactionId,
 //       });
-
 //       toast.error(res.data.message);
 //       setTransactionId("");
 //     } catch (err) {
@@ -491,98 +88,238 @@
 //     }
 //   };
 
+//   /* ── Loading ── */
 //   if (loading) {
-//     return <div className="text-center mt-10">Loading...</div>;
+//     return (
+//       <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center relative overflow-hidden">
+//         <Blob
+//           className="w-96 h-96 bg-primary/15 -top-20 -left-20"
+//           duration={11}
+//           xRange={60}
+//           yRange={50}
+//           delay={0}
+//         />
+//         <Blob
+//           className="w-72 h-72 bg-secondary/15 bottom-0 right-0"
+//           duration={9}
+//           xRange={-50}
+//           yRange={-40}
+//           delay={2}
+//         />
+//         <span className="loading loading-spinner loading-lg relative z-10" />
+//       </div>
+//     );
 //   }
 
+//   /* ── Not found ── */
 //   if (!paper) {
-//     return <div className="text-center mt-10">Paper not found</div>;
+//     return (
+//       <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
+//         <p className="opacity-60 text-lg">Paper not found</p>
+//       </div>
+//     );
 //   }
 
 //   return (
-//     <div className="min-h-screen bg-base-200 p-8">
-//       <div className="max-w-2xl mx-auto bg-base-100 shadow-xl p-8 rounded-xl">
-//         <h1 className="text-3xl font-bold mb-6 text-center">{paper.title}</h1>
+//     <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 relative overflow-hidden p-8">
+//       {/* Blobs */}
+//       <Blob
+//         className="w-[420px] h-[420px] bg-primary/15 -top-24 -left-24"
+//         duration={11}
+//         xRange={60}
+//         yRange={50}
+//         delay={0}
+//       />
+//       <Blob
+//         className="w-[320px] h-[320px] bg-secondary/15 bottom-10 right-0"
+//         duration={9}
+//         xRange={-50}
+//         yRange={-40}
+//         delay={2}
+//       />
+//       <Blob
+//         className="w-[220px] h-[220px] bg-accent/10 top-1/3 right-1/4"
+//         duration={13}
+//         xRange={40}
+//         yRange={60}
+//         delay={3.5}
+//       />
 
-//         <div className="space-y-2 text-lg">
-//           <p>
-//             <strong>Subject:</strong> {paper.subject}
-//           </p>
-//           <p>
-//             <strong>Year:</strong> {paper.year}
-//           </p>
-//           <p>
-//             <strong>Price:</strong> {paper.isPaid ? `₹${paper.price}` : "Free"}
-//           </p>
-//         </div>
+//       <div className="relative z-10 max-w-2xl mx-auto">
+//         {/* Back button */}
+//         <motion.button
+//           initial={{ opacity: 0, x: -10 }}
+//           animate={{ opacity: 1, x: 0 }}
+//           transition={{ duration: 0.4 }}
+//           onClick={() => navigate(-1)}
+//           className="mb-6 text-sm opacity-50 hover:opacity-80 transition flex items-center gap-1"
+//         >
+//           ← Back
+//         </motion.button>
 
-//         <div className="mt-8 space-y-4">
-//           {/* Always Visible */}
-//           <button
-//             type="button"
-//             onClick={handleDownloadQuestion}
-//             className="btn btn-primary w-full"
-//           >
-//             Download Question Paper
-//           </button>
+//         {/* Main card */}
+//         <motion.div
+//           initial={{ opacity: 0, y: 24 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.5 }}
+//           className="bg-base-100/80 backdrop-blur-sm border border-base-300 shadow-2xl rounded-2xl p-8 relative overflow-hidden"
+//         >
+//           {/* Card micro blob */}
+//           <Blob
+//             className="w-48 h-48 bg-primary/10 -bottom-8 -right-8"
+//             duration={8}
+//             xRange={15}
+//             yRange={15}
+//             delay={1}
+//           />
 
-//           {/* Show Buy Button Only If Paid */}
-//           {paper.isPaid && (
-//             <button
-//               type="button"
-//               onClick={handleBuy}
-//               className="btn btn-accent w-full"
-//             >
-//               Buy Answer PDF
-//             </button>
-//           )}
-
-//           {/* Always Visible - Backend handles permission */}
-//           <button
-//             type="button"
-//             onClick={handleDownloadAnswer}
-//             className="btn btn-secondary w-full"
-//           >
-//             Download Answer PDF
-//           </button>
-//         </div>
-
-//         {/* QR Code Section (Only For Paid Papers) */}
-//         {paper.isPaid && qrCode && (
-//           <div className="mt-8 text-center">
-//             <h3 className="font-semibold mb-3">Scan QR Code to Pay</h3>
-//             <img src={qrCode} alt="UPI QR Code" className="mx-auto w-64" />
+//           {/* Badge + Title */}
+//           <div className="text-center mb-8">
+//             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4 border border-primary/20">
+//               📄 PYQ Details
+//             </span>
+//             <h1 className="text-3xl font-bold tracking-tight">{paper.title}</h1>
 //           </div>
-//         )}
 
-//         {/* Transaction Section */}
-//         {paper.isPaid && upiData && (
-//           <div className="mt-8 bg-base-200 p-4 rounded-lg">
-//             <h3 className="font-semibold mb-2">
-//               Enter Transaction ID After Payment
-//             </h3>
-
-//             <p className="mb-3">Amount: ₹{upiData.amount}</p>
-
-//             <input
-//               type="text"
-//               placeholder="Enter Transaction ID"
-//               value={transactionId}
-//               onChange={(e) => setTransactionId(e.target.value)}
-//               className="input input-bordered w-full mb-3"
-//             />
-
-//             <button
-//               type="button"
-//               onClick={handleSubmitTransaction}
-//               className="btn btn-success w-full"
-//             >
-//               Submit Transaction
-//             </button>
+//           {/* Info pills */}
+//           <div className="flex flex-wrap justify-center gap-3 mb-8">
+//             {[
+//               { label: "Subject", value: paper.subject },
+//               { label: "Year", value: paper.year },
+//               {
+//                 label: "Price",
+//                 value: paper.isPaid ? `₹${paper.price}` : "Free",
+//               },
+//             ].map((item, i) => (
+//               <motion.div
+//                 key={i}
+//                 initial={{ opacity: 0, y: 8 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ delay: 0.2 + i * 0.08 }}
+//                 className="bg-base-200/80 border border-base-300 rounded-xl px-4 py-2 text-sm"
+//               >
+//                 <span className="opacity-50 text-xs uppercase tracking-wide block">
+//                   {item.label}
+//                 </span>
+//                 <span className="font-semibold">{item.value}</span>
+//               </motion.div>
+//             ))}
 //           </div>
-//         )}
 
-//         {message && <div className="mt-6 alert alert-info">{message}</div>}
+//           {/* Action buttons */}
+//           <div className="space-y-3">
+//             <motion.button
+//               whileHover={{ scale: 1.02 }}
+//               whileTap={{ scale: 0.97 }}
+//               initial={{ opacity: 0, y: 10 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.35 }}
+//               type="button"
+//               onClick={handleDownloadQuestion}
+//               className="btn btn-primary w-full rounded-xl"
+//             >
+//               ⬇ Download Question Paper
+//             </motion.button>
+
+//             {paper.isPaid && (
+//               <motion.button
+//                 whileHover={{ scale: 1.02 }}
+//                 whileTap={{ scale: 0.97 }}
+//                 initial={{ opacity: 0, y: 10 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ delay: 0.42 }}
+//                 type="button"
+//                 onClick={handleBuy}
+//                 className="btn btn-accent w-full rounded-xl"
+//               >
+//                 💳 Buy Answer PDF
+//               </motion.button>
+//             )}
+
+//             <motion.button
+//               whileHover={{ scale: 1.02 }}
+//               whileTap={{ scale: 0.97 }}
+//               initial={{ opacity: 0, y: 10 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.49 }}
+//               type="button"
+//               onClick={handleDownloadAnswer}
+//               className="btn btn-secondary w-full rounded-xl"
+//             >
+//               ⬇ Download Answer PDF
+//             </motion.button>
+//           </div>
+
+//           {/* QR Code */}
+//           <AnimatePresence>
+//             {paper.isPaid && qrCode && (
+//               <motion.div
+//                 initial={{ opacity: 0, scale: 0.92 }}
+//                 animate={{ opacity: 1, scale: 1 }}
+//                 exit={{ opacity: 0, scale: 0.92 }}
+//                 transition={{ duration: 0.35 }}
+//                 className="mt-8 text-center"
+//               >
+//                 <p className="text-sm font-semibold mb-3 opacity-70">
+//                   Scan to Pay via UPI
+//                 </p>
+//                 <div className="inline-block p-3 bg-white rounded-2xl shadow-lg">
+//                   <img src={qrCode} alt="UPI QR Code" className="w-52 h-52" />
+//                 </div>
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+
+//           {/* Transaction form */}
+//           <AnimatePresence>
+//             {paper.isPaid && upiData && (
+//               <motion.div
+//                 initial={{ opacity: 0, y: 16 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 exit={{ opacity: 0, y: -8 }}
+//                 transition={{ duration: 0.35 }}
+//                 className="mt-8 bg-base-200/70 border border-base-300 rounded-2xl p-5"
+//               >
+//                 <h3 className="font-semibold mb-1">Enter Transaction ID</h3>
+//                 <p className="text-xs opacity-50 mb-4">
+//                   After completing payment of ₹{upiData.amount}
+//                 </p>
+
+//                 <input
+//                   type="text"
+//                   placeholder="Transaction ID"
+//                   value={transactionId}
+//                   onChange={(e) => setTransactionId(e.target.value)}
+//                   className="w-full px-4 py-2.5 rounded-xl border border-base-300 bg-base-100/80 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition mb-3"
+//                 />
+
+//                 <motion.button
+//                   whileHover={{ scale: 1.02 }}
+//                   whileTap={{ scale: 0.97 }}
+//                   type="button"
+//                   onClick={handleSubmitTransaction}
+//                   className="btn btn-success w-full rounded-xl"
+//                 >
+//                   ✓ Submit Transaction
+//                 </motion.button>
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+
+//           {/* Message */}
+//           <AnimatePresence>
+//             {message && (
+//               <motion.div
+//                 initial={{ opacity: 0, y: 8 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 exit={{ opacity: 0 }}
+//                 className="mt-6 alert alert-info rounded-xl text-sm"
+//               >
+//                 {message}
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+//         </motion.div>
 //       </div>
 //     </div>
 //   );
@@ -597,7 +334,7 @@ import QRCode from "qrcode";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 
-/* ── Floating blob ── */
+/* Floating blob */
 const Blob = ({
   className,
   duration = 9,
@@ -644,273 +381,224 @@ const PaperDetails = () => {
   const handleDownloadQuestion = () =>
     window.open(
       `https://studentnotes.onrender.com/api/paper/dwnlQues/${paperId}`,
-      "_blank",
+      "_blank"
     );
 
   const handleDownloadAnswer = () =>
-    window.open(`https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`, "_blank");
+    window.open(
+      `https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`,
+      "_blank"
+    );
 
-  const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isMobile = () =>
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+  /* BUY BUTTON */
   const handleBuy = async () => {
     try {
       const res = await api.get(`/api/paper/generateUpi/${paperId}`);
+
       setUpiData(res.data);
+
+      // QR always generate
+      const qr = await QRCode.toDataURL(res.data.upiLink);
+      setQrCode(qr);
+
+      // mobile → open UPI
       if (isMobile()) {
-        window.location.href = res.data.upiLink;
-      } else {
-        const qr = await QRCode.toDataURL(res.data.upiLink);
-        setQrCode(qr);
+        setTimeout(() => {
+          window.location.href = res.data.upiLink;
+        }, 800);
       }
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to generate UPI link");
     }
   };
 
+  /* TRANSACTION SUBMIT */
   const handleSubmitTransaction = async () => {
     try {
       const res = await api.post(`/api/paper/submitUpi/${paperId}`, {
         transactionId,
       });
-      toast.error(res.data.message);
+
+      toast.success(res.data.message);
+
       setTransactionId("");
     } catch (err) {
       setMessage(err.response?.data?.message || "Error submitting transaction");
     }
   };
 
-  /* ── Loading ── */
+  /* Loading */
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center relative overflow-hidden">
-        <Blob
-          className="w-96 h-96 bg-primary/15 -top-20 -left-20"
-          duration={11}
-          xRange={60}
-          yRange={50}
-          delay={0}
-        />
-        <Blob
-          className="w-72 h-72 bg-secondary/15 bottom-0 right-0"
-          duration={9}
-          xRange={-50}
-          yRange={-40}
-          delay={2}
-        />
-        <span className="loading loading-spinner loading-lg relative z-10" />
+        <span className="loading loading-spinner loading-lg" />
       </div>
     );
   }
 
-  /* ── Not found ── */
   if (!paper) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
-        <p className="opacity-60 text-lg">Paper not found</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Paper not found</p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 relative overflow-hidden p-8">
-      {/* Blobs */}
-      <Blob
-        className="w-[420px] h-[420px] bg-primary/15 -top-24 -left-24"
-        duration={11}
-        xRange={60}
-        yRange={50}
-        delay={0}
-      />
-      <Blob
-        className="w-[320px] h-[320px] bg-secondary/15 bottom-10 right-0"
-        duration={9}
-        xRange={-50}
-        yRange={-40}
-        delay={2}
-      />
-      <Blob
-        className="w-[220px] h-[220px] bg-accent/10 top-1/3 right-1/4"
-        duration={13}
-        xRange={40}
-        yRange={60}
-        delay={3.5}
-      />
 
       <div className="relative z-10 max-w-2xl mx-auto">
-        {/* Back button */}
-        <motion.button
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
+
+        <button
           onClick={() => navigate(-1)}
-          className="mb-6 text-sm opacity-50 hover:opacity-80 transition flex items-center gap-1"
+          className="mb-6 text-sm opacity-50 hover:opacity-80"
         >
           ← Back
-        </motion.button>
+        </button>
 
-        {/* Main card */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-base-100/80 backdrop-blur-sm border border-base-300 shadow-2xl rounded-2xl p-8 relative overflow-hidden"
-        >
-          {/* Card micro blob */}
-          <Blob
-            className="w-48 h-48 bg-primary/10 -bottom-8 -right-8"
-            duration={8}
-            xRange={15}
-            yRange={15}
-            delay={1}
-          />
+        <div className="bg-base-100/80 backdrop-blur-sm border border-base-300 shadow-2xl rounded-2xl p-8">
 
-          {/* Badge + Title */}
           <div className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4 border border-primary/20">
-              📄 PYQ Details
-            </span>
-            <h1 className="text-3xl font-bold tracking-tight">{paper.title}</h1>
+            <h1 className="text-3xl font-bold">{paper.title}</h1>
           </div>
 
-          {/* Info pills */}
           <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {[
-              { label: "Subject", value: paper.subject },
-              { label: "Year", value: paper.year },
-              {
-                label: "Price",
-                value: paper.isPaid ? `₹${paper.price}` : "Free",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.08 }}
-                className="bg-base-200/80 border border-base-300 rounded-xl px-4 py-2 text-sm"
-              >
-                <span className="opacity-50 text-xs uppercase tracking-wide block">
-                  {item.label}
-                </span>
-                <span className="font-semibold">{item.value}</span>
-              </motion.div>
-            ))}
+
+            <div className="bg-base-200 rounded-xl px-4 py-2 text-sm">
+              <span className="opacity-50 block text-xs">Subject</span>
+              <span className="font-semibold">{paper.subject}</span>
+            </div>
+
+            <div className="bg-base-200 rounded-xl px-4 py-2 text-sm">
+              <span className="opacity-50 block text-xs">Year</span>
+              <span className="font-semibold">{paper.year}</span>
+            </div>
+
+            <div className="bg-base-200 rounded-xl px-4 py-2 text-sm">
+              <span className="opacity-50 block text-xs">Price</span>
+              <span className="font-semibold">
+                {paper.isPaid ? `₹${paper.price}` : "Free"}
+              </span>
+            </div>
+
           </div>
 
-          {/* Action buttons */}
+          {/* Buttons */}
+
           <div className="space-y-3">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              type="button"
+
+            <button
               onClick={handleDownloadQuestion}
               className="btn btn-primary w-full rounded-xl"
             >
               ⬇ Download Question Paper
-            </motion.button>
+            </button>
 
             {paper.isPaid && (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.42 }}
-                type="button"
+              <button
                 onClick={handleBuy}
                 className="btn btn-accent w-full rounded-xl"
               >
                 💳 Buy Answer PDF
-              </motion.button>
+              </button>
             )}
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.49 }}
-              type="button"
+            <button
               onClick={handleDownloadAnswer}
               className="btn btn-secondary w-full rounded-xl"
             >
               ⬇ Download Answer PDF
-            </motion.button>
+            </button>
+
           </div>
 
           {/* QR Code */}
-          <AnimatePresence>
-            {paper.isPaid && qrCode && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.92 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.92 }}
-                transition={{ duration: 0.35 }}
-                className="mt-8 text-center"
-              >
-                <p className="text-sm font-semibold mb-3 opacity-70">
-                  Scan to Pay via UPI
+
+          {paper.isPaid && qrCode && (
+            <div className="mt-8 text-center">
+
+              <p className="text-sm font-semibold mb-3 opacity-70">
+                Scan to Pay via UPI
+              </p>
+
+              <div className="inline-block p-3 bg-white rounded-2xl shadow-lg">
+                <img src={qrCode} alt="UPI QR Code" className="w-52 h-52" />
+              </div>
+
+              {/* UPI ID fallback */}
+
+              <div className="mt-4">
+
+                <p className="text-sm opacity-60">
+                  Or pay using UPI ID
                 </p>
-                <div className="inline-block p-3 bg-white rounded-2xl shadow-lg">
-                  <img src={qrCode} alt="UPI QR Code" className="w-52 h-52" />
+
+                <div className="flex justify-center gap-2 mt-2">
+
+                  <code className="bg-base-200 px-3 py-1 rounded">
+                    9779781674@fam
+                  </code>
+
+                  <button
+                    className="btn btn-xs"
+                    onClick={() => {
+                      navigator.clipboard.writeText("9779781674@fam");
+                      toast.success("UPI ID Copied");
+                    }}
+                  >
+                    Copy
+                  </button>
+
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
-          {/* Transaction form */}
-          <AnimatePresence>
-            {paper.isPaid && upiData && (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-                className="mt-8 bg-base-200/70 border border-base-300 rounded-2xl p-5"
+              </div>
+
+            </div>
+          )}
+
+          {/* Transaction Form */}
+
+          {paper.isPaid && upiData && (
+
+            <div className="mt-8 bg-base-200 border border-base-300 rounded-2xl p-5">
+
+              <h3 className="font-semibold mb-1">
+                Enter Transaction ID
+              </h3>
+
+              <p className="text-xs opacity-50 mb-4">
+                After payment enter the transaction ID from your UPI app.
+              </p>
+
+              <input
+                type="text"
+                placeholder="Transaction ID"
+                value={transactionId}
+                onChange={(e) => setTransactionId(e.target.value)}
+                className="input input-bordered w-full mb-3"
+              />
+
+              <button
+                onClick={handleSubmitTransaction}
+                className="btn btn-success w-full"
               >
-                <h3 className="font-semibold mb-1">Enter Transaction ID</h3>
-                <p className="text-xs opacity-50 mb-4">
-                  After completing payment of ₹{upiData.amount}
-                </p>
+                ✓ Submit Transaction
+              </button>
 
-                <input
-                  type="text"
-                  placeholder="Transaction ID"
-                  value={transactionId}
-                  onChange={(e) => setTransactionId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-base-300 bg-base-100/80 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition mb-3"
-                />
+            </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  type="button"
-                  onClick={handleSubmitTransaction}
-                  className="btn btn-success w-full rounded-xl"
-                >
-                  ✓ Submit Transaction
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          )}
 
-          {/* Message */}
-          <AnimatePresence>
-            {message && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mt-6 alert alert-info rounded-xl text-sm"
-              >
-                {message}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+          {message && (
+            <div className="mt-6 alert alert-info text-sm">
+              {message}
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
   );

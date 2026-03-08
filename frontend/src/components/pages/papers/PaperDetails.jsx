@@ -384,11 +384,37 @@ const PaperDetails = () => {
       "_blank"
     );
 
-  const handleDownloadAnswer = () =>
-    window.open(
-      `https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`,
-      "_blank"
-    );
+  // const handleDownloadAnswer = () =>
+  //   window.open(
+  //     `https://studentnotes.onrender.com/api/paper/dwnlAns/${paperId}`,
+  //     "_blank"
+  //   );
+
+  const handleDownloadAnswer = async () => {
+  try {
+    const res = await api.get(`/api/paper/dwnlAns/${paperId}`, {
+      responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", "answer.pdf");
+    document.body.appendChild(link);
+    link.click();
+
+    link.remove();
+  } catch (err) {
+
+    const msg =
+      err.response?.data?.message ||
+      "You have not purchased this paper";
+
+    toast.error(msg); // alert show
+
+  }
+};
 
   const isMobile = () =>
     /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);

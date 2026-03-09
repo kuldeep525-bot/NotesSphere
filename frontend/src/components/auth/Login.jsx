@@ -26,10 +26,13 @@ export const Login = () => {
 
       showSuccess("Login successful");
 
-      await verifyUser();
-      console.log(res);
-
-      navigate("/dashboard", { replace: true });
+      // await verifyUser();
+      // console.log(res);
+      // navigate("/dashboard", { replace: true });
+      setTimeout(async () => {
+  await verifyUser();
+  navigate("/dashboard", { replace: true });
+}, 500);
     } catch (error) {
       console.log(error.message);
       showError(error.response?.data?.message || "Login failed");

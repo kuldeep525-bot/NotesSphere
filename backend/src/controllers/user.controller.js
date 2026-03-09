@@ -90,10 +90,10 @@ export const login = async (req, res) => {
 
     //setup cookie
     const cookiesOption = {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       httpOnly: true, //frontend js cannot access
       secure: true,
       sameSite: "none", //CSRF prvenetion
+      maxAge: 24 * 60 * 60 * 1000,
     };
 
     //store token in cookie

@@ -21,8 +21,6 @@ export const uploadOnCloudinary = async (localFilePath) => {
 
     // upload success → delete local file
     fs.unlinkSync(localFilePath);
-    console.log(response);
-    console.log("Local path:", localFilePath);
     return response; // controller handle karega
   } catch (error) {
     if (fs.existsSync(localFilePath)) {

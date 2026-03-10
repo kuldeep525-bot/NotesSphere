@@ -20,18 +20,29 @@
 //   });
 // };
 
-//resend mail uses
-
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 export const sendEmail = async ({ to, subject, text }) => {
-  await resend.emails.send({
-    // from: "NotesSphere <onboarding@resend.dev>",
-    from: "bachelor97797@gmail.com",
-    to,
-    subject,
-    text,
-  });
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.BREVO_EMAIL,
+        pass: process.env.BREVO_SMTP_KEY,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: `"NotesSphere" <${process.env.BREVO_EMAIL}>`,
+      to,
+      subject,
+      text,
+    });
+
+    console.log("Email sent:", info.messageId);
+  } catch (error) {
+    console.log("Email error:", error);
+  }
 };

@@ -13,15 +13,17 @@ import ToastProvider from "./context/ToastProvider.jsx";
 import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
-
+  <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <NotesProvider>
           <PaperProvider>
-            <App />
-            <ToastProvider />
+            <ToastProvider>
+              <App />
+            </ToastProvider>
           </PaperProvider>
         </NotesProvider>
       </ThemeProvider>
-    </BrowserRouter>,
+    </BrowserRouter>
+  </StrictMode>
 );

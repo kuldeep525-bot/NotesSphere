@@ -16,8 +16,8 @@ const Logout = () => {
         {},
         { withCredentials: true },
       );
-
-      toast.success("Logged out successfully");
+      alert("Logged out successfully")
+      // toast.success("Logged out successfully");
 
       setUser(null);
 

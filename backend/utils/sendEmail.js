@@ -28,7 +28,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async ({ to, subject, text }) => {
   await resend.emails.send({
-    from: "NotesSphere <onboarding@resend.dev>",
+    // from: "NotesSphere <onboarding@resend.dev>",
+    from: "bachelor97797@gmail.com",
     to,
     subject,
     text,
